@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Acortador de URLs</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        input { width: 100%; padding: 8px; margin: 8px 0; box-sizing: border-box; }
+        button { background: #4CAF50; color: white; padding: 10px 15px; border: none; cursor: pointer; }
+        #result { margin-top: 20px; padding: 15px; background: #f4f4f4; border-radius: 5px; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Acortador de URLs</h1>
+    <form id="shortenForm">
+        <input type="url" id="originalUrl" placeholder="https://ejemplo.com" required>
+        <input type="text" id="customAlias" placeholder="mi-alias (opcional)">
+        <button type="submit">Acortar</button>
+    </form>
+    <div id="result"></div>
+    
+    <script>
+        document.getElementById('shortenForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>Procesando...</p>';
+
+            try {
+                const response = await fetch('http://localhost:8000/shorten', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        original_url: document.getElementById('originalUrl').value,
+                        custom_alias: document.getElementById('customAlias').value 
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || 'Error al acortar la URL');
+                }
+
+                const data = await response.json();
+                resultDiv.innerHTML = `
+                    <p>URL acortada: <a href="${data.short_url}" target="_blank">${data.short_url}</a></p>
+                    <button onclick="navigator.clipboard.writeText('${data.short_url}')">Copiar</button>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html>
