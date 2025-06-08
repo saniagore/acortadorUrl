@@ -5,7 +5,7 @@ from pydantic import BaseModel
 import secrets
 import string
 from typing import Optional
-from config.connection import get_db_connection
+from api.config.connection import get_db_connection
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
