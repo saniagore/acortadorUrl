@@ -4,9 +4,7 @@
     <title>Acortador de URLs</title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body
-    class="bg-gray-900 min-h-screen flex flex-col text-white"
-  >
+  <body class="bg-gray-900 min-h-screen flex flex-col text-white">
     <nav class="bg-gray-800 p-6 text-white flex justify-between items-center">
       <div>
         <img src="../static/images/logo.png" alt="Logo" class="size-20" />
@@ -22,7 +20,9 @@
     </nav>
 
     <div class="flex flex-col items-center justify-center flex-grow bg-bl">
-      <div class="border-2 border-gray-800 p-16 bg-gray-800 rounded-xl hover:shadow-[0_0_15px_5px] hover:shadow-[#007af4] transition-all duration-300 animate-shadow-change">
+      <div
+        class="border-2 border-gray-800 p-16 bg-gray-800 rounded-xl hover:shadow-[0_0_15px_5px] hover:shadow-[#007af4] transition-all duration-300 animate-shadow-change"
+      >
         <h1 class="text-2xl font-bold text-center mb-16">Acortador de URLs</h1>
 
         <form id="shortenForm">
@@ -48,10 +48,15 @@
             </button>
           </div>
         </form>
-        <div
-          class="bg-gray-800 p-6 text-white justify-center items-center font-bold mt-4 rounded-lg hidden"
-          id="result"
-        ></div>
+        <div class="flex-col items-center mt-5 hidden" id="resultContainer">
+          <div
+            class="bg-gray-700 p-6 text-white justify-center items-center font-bold mt-4 rounded-lg w-full"
+            id="result"
+          ></div>
+            <button id="copyButton" class="bg-[#0179f3] text-white font-bold py-2 px-4 rounded-lg mt-4">
+              Copiar
+            </button>
+        </div>
       </div>
     </div>
 

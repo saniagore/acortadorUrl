@@ -24,10 +24,15 @@
                 const data = await response.json();
                 resultDiv.innerHTML = `
                     <p>URL acortada: <a href="${data.short_url}" target="_blank">${data.short_url}</a></p>
-                    <button onclick="navigator.clipboard.writeText('${data.short_url}')">Copiar</button>
                 `;
 
-                document.getElementById('result').classList.remove('hidden');
+                document.getElementById('resultContainer').classList.remove('hidden');
+                document.getElementById('resultContainer').classList.add('flex');
+                document.getElementById('copyButton').onclick = () => {
+                    navigator.clipboard.writeText(data.short_url)
+                        .then(() => alert('URL copiada al portapapeles'))
+                        .catch(err => console.error('Error al copiar:', err));
+                }
             } catch (error) {
                 resultDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
                 console.error('Error:', error);
