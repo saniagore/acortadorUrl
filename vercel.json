@@ -21,7 +21,10 @@
     },
     {
       "src": "/",
-      "dest": "/templates/index.html"
+      "dest": "/templates/index.html",
+      "headers": {
+        "Content-Type": "text/html"
+      }
     },
     {
       "src": "/(.*)",
