@@ -48,7 +48,6 @@ async def shorten_url(url_request: URLRequest):
     
     try:
         short_code = url_request.custom_alias or generate_short_url()
-        # Verificar si el código existe
         if url_request.custom_alias:
             exists = await conn.fetchval(
                 "SELECT 1 FROM urls WHERE short_code = $1", 
@@ -63,7 +62,8 @@ async def shorten_url(url_request: URLRequest):
             short_code
         )
 
-        return {"short_url": f"http://localhost:8000/{short_code}"}
+        # Cambia esta línea para usar tu dominio de Vercel
+        return {"short_url": f"https://acortador-url-beta.vercel.app/{short_code}"}
     
     except asyncpg.UniqueViolationError:
         raise HTTPException(status_code=400, detail="Short URL already exists.")
