@@ -1,0 +1,35 @@
+        document.getElementById('shortenForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>Procesando...</p>';
+
+            try {
+                const response = await fetch('http://localhost:8000/shorten', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        original_url: document.getElementById('originalUrl').value,
+                        custom_alias: document.getElementById('customAlias').value 
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || 'Error al acortar la URL');
+                }
+
+                const data = await response.json();
+                resultDiv.innerHTML = `
+                    <p>URL acortada: <a href="${data.short_url}" target="_blank">${data.short_url}</a></p>
+                    <button onclick="navigator.clipboard.writeText('${data.short_url}')">Copiar</button>
+                `;
+
+                document.getElementById('result').classList.remove('hidden');
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+                console.error('Error:', error);
+            }
+        });

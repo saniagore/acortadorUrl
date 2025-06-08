@@ -1,58 +1,60 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Acortador de URLs</title>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
-        input { width: 100%; padding: 8px; margin: 8px 0; box-sizing: border-box; }
-        button { background: #4CAF50; color: white; padding: 10px 15px; border: none; cursor: pointer; }
-        #result { margin-top: 20px; padding: 15px; background: #f4f4f4; border-radius: 5px; }
-        .error { color: red; }
-    </style>
-</head>
-<body>
-    <h1>Acortador de URLs</h1>
-    <form id="shortenForm">
-        <input type="url" id="originalUrl" placeholder="https://ejemplo.com" required>
-        <input type="text" id="customAlias" placeholder="mi-alias (opcional)">
-        <button type="submit">Acortar</button>
-    </form>
-    <div id="result"></div>
-    
-    <script>
-        document.getElementById('shortenForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = '<p>Procesando...</p>';
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="bg-gradient-to-l from-[#000000] via-transparent to-[#00bfff] min-h-screen flex flex-col text-white"
+  >
+    <nav class="bg-gray-800 p-6 text-white flex justify-between items-center">
+      <div>
+        <img src="../static/images/logo.png" alt="Logo" class="size-20" />
+      </div>
+      <div class="mx-auto">
+        <a
+          href="#"
+          class="font-bold text-2xl hover:text-gray-300 hover:cursor-default -ml-14"
+        >
+          Acortar URL
+        </a>
+      </div>
+    </nav>
 
-            try {
-                const response = await fetch('http://localhost:8000/shorten', {
-                    method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({ 
-                        original_url: document.getElementById('originalUrl').value,
-                        custom_alias: document.getElementById('customAlias').value 
-                    })
-                });
+    <div class="flex flex-col items-center justify-center flex-grow bg-bl">
+      <div class="border-2 border-gray-800 p-16 bg-gray-800 rounded-xl">
+        <h1 class="text-2xl font-bold text-center mb-16">Acortador de URLs</h1>
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.detail || 'Error al acortar la URL');
-                }
+        <form id="shortenForm">
+          <input
+            class="border border-gray-300 p-2 rounded-lg mb-4 w-full"
+            type="url"
+            id="originalUrl"
+            placeholder="https://ejemplo.com"
+            required
+          />
+          <input
+            class="border border-gray-300 p-2 rounded-lg mb-4 w-full"
+            type="text"
+            id="customAlias"
+            placeholder="mi-alias (opcional)"
+          />
+          <div class="flex justify-center">
+            <button
+              class="bg-[#0179f3] text-white font-bold py-2 px-4 rounded-lg"
+              type="submit"
+            >
+              Acortar
+            </button>
+          </div>
+        </form>
+        <div
+          class="bg-gray-800 p-6 text-white justify-center items-center font-bold mt-4 rounded-lg hidden"
+          id="result"
+        ></div>
+      </div>
+    </div>
 
-                const data = await response.json();
-                resultDiv.innerHTML = `
-                    <p>URL acortada: <a href="${data.short_url}" target="_blank">${data.short_url}</a></p>
-                    <button onclick="navigator.clipboard.writeText('${data.short_url}')">Copiar</button>
-                `;
-            } catch (error) {
-                resultDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
-                console.error('Error:', error);
-            }
-        });
-    </script>
-</body>
+    <script src="../static/js/main.js"></script>
+  </body>
 </html>

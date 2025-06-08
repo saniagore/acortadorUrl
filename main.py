@@ -4,7 +4,6 @@ from fastapi.responses import RedirectResponse, HTMLResponse, FileResponse
 from pydantic import BaseModel
 import secrets
 import string
-import os
 from typing import Optional
 from config.connection import get_db_connection
 from fastapi.middleware.cors import CORSMiddleware
